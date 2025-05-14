@@ -19,35 +19,35 @@ export const config = {
 export async function middleware(request: NextRequest) {
   const auth = initializeLucia();
   const sessionId = request.cookies.get(auth.sessionCookieName)?.value ?? null;
-  
+
   if (!sessionId) {
     // If no session and trying to access protected routes, redirect to login
-    const isProtectedRoute = 
+    const isProtectedRoute =
       request.nextUrl.pathname.startsWith("/dashboard") ||
       request.nextUrl.pathname.startsWith("/profile");
-      
+
     if (isProtectedRoute) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     return NextResponse.next();
   }
-  
+
   try {
-    const { user } = await auth.validateSession(sessionId);
-    
+    const { user, session } = await auth.validateSession(sessionId);
+
     // If session is valid but trying to access login/signup pages, redirect to dashboard
-    const isAuthRoute = 
-      request.nextUrl.pathname === "/login" || 
+    const isAuthRoute =
+      request.nextUrl.pathname === "/login" ||
       request.nextUrl.pathname === "/signup";
-      
+
     if (isAuthRoute) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
-    
+
     // Add user info to request headers for use in pages
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-user-id", user.id);
-    
+
     return NextResponse.next({
       request: {
         headers: requestHeaders,

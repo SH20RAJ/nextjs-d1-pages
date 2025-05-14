@@ -7,3 +7,12 @@ declare namespace Lucia {
   };
   type DatabaseSessionAttributes = {};
 }
+
+// This is important for Lucia to work correctly with TypeScript
+declare global {
+  namespace App {
+    interface Locals {
+      auth: import("lucia").AuthRequest;
+    }
+  }
+}
