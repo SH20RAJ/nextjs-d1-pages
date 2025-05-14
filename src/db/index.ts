@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { getRequestContext } from '@cloudflare/next-on-pages';
-import { desc } from 'drizzle-orm';
+import { desc, sql } from 'drizzle-orm';
 import * as schema from './schema';
 
 // Create a Drizzle client for D1
@@ -49,7 +49,11 @@ export async function getAllPosts() {
     user_email: schema.users.email,
   })
   .from(schema.posts)
-  .innerJoin(schema.users, schema.posts.user_id.eq(schema.users.id))
+  .innerJoin(
+    schema.users,
+    // Use the SQL equality operator directly
+    sql`${schema.posts.user_id} = ${schema.users.id}`
+  )
   .orderBy(desc(schema.posts.id));
 }
 
