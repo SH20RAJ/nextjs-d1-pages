@@ -17,8 +17,11 @@
 	},
 	"dependencies": {
 		"@cloudflare/d1": "^1.4.1",
+		"@lucia-auth/adapter-sqlite": "^3.0.2",
 		"drizzle-orm": "^0.30.7",
+		"lucia": "^3.2.2",
 		"next": "15.3.2",
+		"oslo": "^1.2.1",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},
