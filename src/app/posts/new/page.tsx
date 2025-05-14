@@ -8,6 +8,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  created_at?: string;
 }
 
 export default function NewPost() {
@@ -28,11 +29,11 @@ export default function NewPost() {
         const response = await fetch('/api/users');
 
         if (!response.ok) {
-          const data = await response.json();
+          const data = await response.json() as { error?: string };
           throw new Error(data.error || 'Failed to fetch users');
         }
 
-        const data = await response.json();
+        const data = await response.json() as { users: User[] };
         setUsers(data.users || []);
       } catch (err: any) {
         console.error('Error fetching users:', err);
@@ -64,7 +65,7 @@ export default function NewPost() {
       });
 
       if (!response.ok) {
-        const data = await response.json();
+        const data = await response.json() as { error?: string };
         throw new Error(data.error || 'Failed to create post');
       }
 
