@@ -16,9 +16,12 @@
 		"drizzle:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
+		"@auth/core": "^0.39.1",
+		"@auth/d1-adapter": "^1.9.1",
 		"@cloudflare/d1": "^1.4.1",
 		"drizzle-orm": "^0.30.7",
 		"next": "15.3.2",
+		"next-auth": "^5.0.0-beta.4",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},

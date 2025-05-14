@@ -18,8 +18,13 @@
 			"binding": "DB",
 			"database_name": "nextjs-d1-db",
 			"database_id": "4ebfb826-3757-4e0d-90f7-41797196977d"
+		},
+		{
+			"binding": "AUTH_DB",
+			"database_name": "auth-db",
+			"database_id": "a2eefd10-6736-4039-bb52-44e5f7059dab"
 		}
-	],
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
