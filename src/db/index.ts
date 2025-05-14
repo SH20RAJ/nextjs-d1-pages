@@ -1,5 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { getRequestContext } from '@cloudflare/next-on-pages';
+import { desc } from 'drizzle-orm';
 import * as schema from './schema';
 
 // Create a Drizzle client for D1
@@ -11,7 +12,7 @@ export function getDB() {
 // Helper function to get all users
 export async function getAllUsers() {
   const db = getDB();
-  return await db.select().from(schema.users).orderBy(schema.users.id.desc());
+  return await db.select().from(schema.users).orderBy(desc(schema.users.id));
 }
 
 // Helper function to get a user by ID
@@ -49,7 +50,7 @@ export async function getAllPosts() {
   })
   .from(schema.posts)
   .innerJoin(schema.users, schema.posts.user_id.eq(schema.users.id))
-  .orderBy(schema.posts.id.desc());
+  .orderBy(desc(schema.posts.id));
 }
 
 // Helper function to create a new post
