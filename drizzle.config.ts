@@ -3,9 +3,9 @@ import type { Config } from 'drizzle-kit';
 export default {
   schema: './src/db/schema.ts',
   out: './drizzle',
-  driver: 'd1',
+  dialect: 'sqlite',
+  // D1 specific configuration
   dbCredentials: {
-    wranglerConfigPath: './wrangler.jsonc',
-    dbName: 'nextjs-d1-db',
+    url: 'file:./local.db', // Local SQLite database for development
   },
 } satisfies Config;
