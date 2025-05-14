@@ -10,9 +10,14 @@
 		"pages:build": "npx @cloudflare/next-on-pages",
 		"preview": "npm run pages:build && wrangler pages dev",
 		"deploy": "npm run pages:build && wrangler pages deploy",
-		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./env.d.ts"
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./env.d.ts",
+		"drizzle:generate": "drizzle-kit generate:sqlite",
+		"drizzle:push": "drizzle-kit push:sqlite",
+		"drizzle:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
+		"@cloudflare/d1": "^1.4.1",
+		"drizzle-orm": "^0.30.7",
 		"next": "15.3.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
@@ -24,6 +29,7 @@
 		"@types/node": "^20.17.47",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"drizzle-kit": "^0.21.3",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.2",
 		"tailwindcss": "^4",

@@ -1,17 +1,7 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getAllPosts, createPost, getUserById } from '@/db';
+import { NewPost } from '@/db/schema';
 
 export const runtime = 'edge';
-
-// Define types for our data
-interface Post {
-  id: number;
-  user_id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  user_name?: string;
-  user_email?: string;
-}
 
 interface PostRequestBody {
   user_id: number;
@@ -22,22 +12,8 @@ interface PostRequestBody {
 // GET all posts with user info
 export async function GET() {
   try {
-    const { env } = getRequestContext();
-    const { results } = await env.DB.prepare(`
-      SELECT
-        posts.id,
-        posts.title,
-        posts.content,
-        posts.created_at,
-        posts.user_id,
-        users.name as user_name,
-        users.email as user_email
-      FROM posts
-      JOIN users ON posts.user_id = users.id
-      ORDER BY posts.id DESC
-    `).all();
-
-    return Response.json({ posts: results });
+    const posts = await getAllPosts();
+    return Response.json({ posts });
   } catch (error) {
     console.error('Error fetching posts:', error);
     return Response.json({ error: 'Failed to fetch posts' }, { status: 500 });
@@ -47,7 +23,6 @@ export async function GET() {
 // POST to create a new post
 export async function POST(request: Request) {
   try {
-    const { env } = getRequestContext();
     const body = await request.json() as PostRequestBody;
     const { user_id, title, content } = body;
 
@@ -57,20 +32,22 @@ export async function POST(request: Request) {
     }
 
     // Check if user exists
-    const { results: existingUser } = await env.DB.prepare(
-      'SELECT * FROM users WHERE id = ?'
-    ).bind(user_id).all();
+    const existingUser = await getUserById(user_id);
 
-    if (existingUser.length === 0) {
+    if (!existingUser) {
       return Response.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Insert new post
-    const result = await env.DB.prepare(
-      'INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?) RETURNING id, user_id, title, content, created_at'
-    ).bind(user_id, title, content).all();
+    const newPost: NewPost = {
+      user_id,
+      title,
+      content
+    };
 
-    return Response.json({ post: result.results[0] }, { status: 201 });
+    const post = await createPost(newPost);
+
+    return Response.json({ post }, { status: 201 });
   } catch (error) {
     console.error('Error creating post:', error);
     return Response.json({ error: 'Failed to create post' }, { status: 500 });

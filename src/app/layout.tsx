@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js D1 Database Demo",
-  description: "A demo application showing how to use Cloudflare D1 with Next.js",
+  title: "Next.js D1 with Drizzle ORM",
+  description: "A demo application showing how to use Cloudflare D1 with Drizzle ORM in Next.js",
 };
 
 export default function RootLayout({

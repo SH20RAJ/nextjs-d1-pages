@@ -5,7 +5,7 @@ export default function Navigation() {
     <nav className="bg-foreground text-background p-4 mb-8">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          D1 Demo
+          D1 Demo with Drizzle
         </Link>
         <div className="space-x-4">
           <Link href="/" className="hover:underline">

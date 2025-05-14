@@ -1,38 +1,19 @@
 import Navigation from "@/components/Navigation";
 import Link from "next/link";
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getAllUsers, getAllPosts } from "@/db";
 
 // Set edge runtime for Cloudflare Pages
 export const runtime = 'edge';
 
-// Server component that directly uses D1 binding
+// Server component that directly uses Drizzle ORM
 export default async function Home() {
   let users = [];
   let posts = [];
 
   try {
-    // Get the D1 database binding directly
-    const { env } = getRequestContext();
-
-    // Fetch users
-    const usersResult = await env.DB.prepare('SELECT * FROM users ORDER BY id DESC').all();
-    users = usersResult.results || [];
-
-    // Fetch posts with user info
-    const postsResult = await env.DB.prepare(`
-      SELECT
-        posts.id,
-        posts.title,
-        posts.content,
-        posts.created_at,
-        posts.user_id,
-        users.name as user_name,
-        users.email as user_email
-      FROM posts
-      JOIN users ON posts.user_id = users.id
-      ORDER BY posts.id DESC
-    `).all();
-    posts = postsResult.results || [];
+    // Fetch users and posts using Drizzle ORM
+    users = await getAllUsers();
+    posts = await getAllPosts();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -41,7 +22,7 @@ export default async function Home() {
     <div>
       <Navigation />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">D1 Database Demo</h1>
+        <h1 className="text-3xl font-bold mb-8">D1 Database with Drizzle ORM</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Users Section */}
