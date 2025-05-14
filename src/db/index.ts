@@ -18,14 +18,14 @@ export async function getAllUsers() {
 // Helper function to get a user by ID
 export async function getUserById(id: number) {
   const db = getDB();
-  const results = await db.select().from(schema.users).where(schema.users.id.eq(id));
+  const results = await db.select().from(schema.users).where(sql`${schema.users.id} = ${id}`);
   return results[0] || null;
 }
 
 // Helper function to get a user by email
 export async function getUserByEmail(email: string) {
   const db = getDB();
-  const results = await db.select().from(schema.users).where(schema.users.email.eq(email));
+  const results = await db.select().from(schema.users).where(sql`${schema.users.email} = ${email}`);
   return results[0] || null;
 }
 
