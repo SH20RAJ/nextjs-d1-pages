@@ -5,21 +5,19 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "nextjs-d1-pages",
-	"compatibility_date": "2025-05-14",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-03-01",
 	"compatibility_flags": [
-		"nodejs_compat"
+		"nodejs_compat",
+		"global_fetch_strictly_public"
 	],
-	"pages_build_output_dir": ".vercel/output/static",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".open-next/assets"
+	},
 	"observability": {
 		"enabled": true
-	},
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "nextjs-d1-db",
-			"database_id": "4ebfb826-3757-4e0d-90f7-41797196977d"
-		}
-	],
+	}
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
